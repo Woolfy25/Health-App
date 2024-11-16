@@ -3,8 +3,10 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     screens: {
-      tablet: "768px",
+      tablet: { min: "426px", max: "768px" },
       // => @media (min-width: 425px) and (max-width: 768px) { ... }
+
+      phone: { max: "426px" },
 
       laptop: "1024px",
       // => @media (min-width: 1024px) { ... }
