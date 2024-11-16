@@ -33,3 +33,11 @@ body {
     @apply flex items-center justify-center;
   }
 }
+
+@media screen and (min-width: 425px) and (max-width: 768px) {
+  .bg-image {
+    background-image: url("./images/fruits-bg-tablet.png"),
+      url("./images/vector-bg.png");
+    background-size: 400px 400px, 400px 450px;
+  }
+}
