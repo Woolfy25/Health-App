@@ -1,12 +1,16 @@
 import logo from "../../images/logoSlimMom.png";
 
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import { register } from "../../REDUX/auth/operations";
 
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 const Register = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Name is required"),
@@ -28,6 +32,7 @@ const Register = () => {
         }}
         validationSchema={validationSchema}
         onSubmit={(values, { resetForm }) => {
+          dispatch(register(values));
           console.log("Submitted Values:", values); // ! REMOVE
           resetForm();
         }}
