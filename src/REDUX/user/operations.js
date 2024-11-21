@@ -22,7 +22,29 @@ export const fetchCurrentUser = createAsyncThunk(
       setAuthHeader(token);
 
       const response = await axios.get("/account/current");
-      return response.data;
+      return response.data.data;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const updateCurrentUser = createAsyncThunk(
+  "user/update",
+  async ({ accountId, data }, thunkApi) => {
+    try {
+      const state = thunkApi.getState();
+      const token = selectToken(state);
+
+      if (!token) {
+        return thunkApi.rejectWithValue("No token found");
+      }
+
+      setAuthHeader(token);
+      console.log(accountId, data);
+
+      const response = await axios.patch(`/account/${accountId}`, data);
+      return response.data.data;
     } catch (error) {
       return thunkApi.rejectWithValue(error.message);
     }

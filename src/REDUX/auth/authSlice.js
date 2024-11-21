@@ -15,11 +15,6 @@ const authSlice = createSlice({
     user: {
       name: null,
       email: null,
-      calories: null,
-      height: null,
-      age: null,
-      blood: null,
-      verify: null,
     },
     token: null,
     isLoggedIn: false,
@@ -50,11 +45,6 @@ const authSlice = createSlice({
         state.user = {
           name: null,
           email: null,
-          calories: null,
-          height: null,
-          age: null,
-          blood: null,
-          verify: null,
         };
         state.token = null;
         state.isLoggedIn = false;

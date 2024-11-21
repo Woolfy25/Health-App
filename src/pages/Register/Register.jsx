@@ -33,7 +33,6 @@ const Register = () => {
         validationSchema={validationSchema}
         onSubmit={(values, { resetForm }) => {
           dispatch(register(values));
-          console.log("Submitted Values:", values); // ! REMOVE
           resetForm();
         }}
       >
@@ -66,7 +65,7 @@ const Register = () => {
                     onClick={() => {
                       navigate("/register");
                     }}
-                    className="text-slate-300 text-sm font-bold hover:text-slate-500 focus:text-slate-500 transition-all duration-300"
+                    className="text-sm font-bold text-slate-500"
                   >
                     REGISTER
                   </button>
@@ -110,7 +109,7 @@ const Register = () => {
                       <Field
                         id="password"
                         name="password"
-                        type="string"
+                        type="password"
                         placeholder="Password *"
                         className="w-60 bg-transparent border-b-2 outline-none pb-2 text-slate-400 font-bold focus:text-slate-600 focus:border-slate-600 placeholder:focus:text-slate-600 hover:text-slate-600 hover:border-slate-600"
                       />

@@ -19,21 +19,21 @@ const mealsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchMeals.fulfilled, (state, action) => {
-        state.meals = action.payload;
+        state.meals = action.payload.data;
         state.isLoading = false;
         state.error = null;
       })
       .addCase(fetchMeals.pending, handlePending)
       .addCase(fetchMeals.rejected, handleReject)
       .addCase(addMeals.fulfilled, (state, action) => {
-        state.meals.push(action.payload);
+        state.meals.push(action.payload.data);
         state.isLoading = false;
         state.error = null;
       })
       .addCase(addMeals.pending, handlePending)
       .addCase(addMeals.rejected, handleReject)
       .addCase(deleteMeals.fulfilled, (state, action) => {
-        state.meals = state.meals.filter((meal) => meal.id !== action.payload);
+        state.meals = state.meals.filter((meal) => meal._id !== action.payload);
         state.isLoading = false;
         state.error = null;
       })

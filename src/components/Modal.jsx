@@ -24,16 +24,16 @@ const Modal = ({ values, onClose }) => {
           {caloriesCount}{" "}
           <span className="text-slate-600 text-xl font-bold">cal.</span>
         </p>
-        <div className="flex flex-col gap-3 w-3/5 phone:w-full">
+        <div className="flex flex-col gap-3 w-3/5 tablet:w-5/6 phone:w-full">
           <div className="w-full h-[1px] bg-slate-500"></div>
           <p className="text-slate-800 text-base font-semibold tablet:text-sm">
             Foods you should not eat:
           </p>
           <ul className="pl-4 flex flex-col gap-1">
-            <li className="text-base font-thin">Placeholder</li>
-            <li className="text-base font-thin">Placeholder</li>
-            <li className="text-base font-thin">Placeholder</li>
-            <li className="text-base font-thin">Placeholder</li>
+            <li className="text-base font-thin">- Highly Processed Foods</li>
+            <li className="text-base font-thin">- Sugary Beverages</li>
+            <li className="text-base font-thin">- Fried and Fast Foods</li>
+            <li className="text-base font-thin">- Refined Carbohydrates</li>
           </ul>
         </div>
         <button
@@ -41,7 +41,7 @@ const Modal = ({ values, onClose }) => {
           onClick={() => navigate("/register")}
           className="bg-orange-500 text-white px-6 py-3 rounded-full w-52 hover:bg-orange-600 hover:scale-105 transition-all duration-300 phone:w-4/5"
         >
-          Start losing weight
+          Start your journey
         </button>
       </div>
     </div>

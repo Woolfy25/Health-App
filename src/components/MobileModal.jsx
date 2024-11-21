@@ -1,11 +1,13 @@
-import { useState } from "react";
 import { IoClose } from "react-icons/io5";
+
+import { useDispatch } from "react-redux";
+import { addMeals } from "../REDUX/meals/operations";
 
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-const MobileModal = ({ onClick }) => {
-  const [submittedValues, setSubmittedValues] = useState(null);
+const MobileModal = ({ date, onClick }) => {
+  const dispatch = useDispatch();
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Name is required"),
@@ -20,11 +22,21 @@ const MobileModal = ({ onClick }) => {
       <Formik
         initialValues={{
           name: "",
-          grams: 0,
+          grams: "",
+          calories: "",
+          date: "",
         }}
         validationSchema={validationSchema}
         onSubmit={(values, { resetForm }) => {
-          setSubmittedValues(values);
+          const submitValues = {
+            product: values.name,
+            weight: values.grams,
+            calories: 0,
+            date: date,
+          };
+          // console.log(submitValues);
+
+          dispatch(addMeals(submitValues));
           resetForm();
         }}
       >

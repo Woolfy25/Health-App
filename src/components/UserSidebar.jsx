@@ -1,13 +1,24 @@
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { logout } from "../REDUX/auth/operations";
+import { selectUserName, selectUserCurrent } from "../REDUX/user/selectors";
+
+import { fetchCurrentUser } from "../REDUX/user/operations";
 
 const UserSidebar = () => {
   const dispatch = useDispatch();
+  const name = useSelector(selectUserName);
+  const user = useSelector(selectUserCurrent);
+
+  useEffect(() => {
+    dispatch(fetchCurrentUser());
+  }, [dispatch]);
 
   return (
     <section className="w-2/5 flex flex-col pt-12 gap-24 bg-neutral-100 pl-8 tablet:w-full tablet:h-full tablet:pt-16 tablet:pb-16 tablet:pl-6 tablet:pr-6 phone:w-full phone:h-full phone:pt-16 phone:pb-16 phone:pl-3 phone:pr-3">
       <div className="flex justify-end items-center gap-3 mt-8 pr-6 tablet:hidden phone:hidden">
-        <p className="text-sm font-bold text-slate-500">Name</p>
+        <p className="text-sm font-bold text-slate-500">{name}</p>
         <div className="bg-slate-300 h-8 w-[2px] tablet:hidden phone:hidden"></div>
         <button
           onClick={() => dispatch(logout())}
@@ -32,10 +43,23 @@ const UserSidebar = () => {
               </li>
             </ul>
             <ul className="flex flex-col gap-2">
-              <li className="text-base font-thin text-slate-400">000 cal</li>
-              <li className="text-base font-thin text-slate-400">000 cal</li>
-              <li className="text-base font-thin text-slate-400">000 cal</li>
-              <li className="text-base font-thin text-slate-400">000 cal</li>
+              <li className="text-base font-thin text-slate-400 text-end">
+                {user.calories ? `${user.calories - 100} kcal` : "none"}
+              </li>
+              <li className="text-base font-thin text-slate-400 text-end">
+                {user.calories ? `${user.calories - 100} kcal` : "none"}
+              </li>
+              {
+                // ! modifica cu consumed
+              }
+              <li className="text-base font-thin text-slate-400 text-end">
+                {user.calories ? `${user.calories} kcal` : "none"}
+              </li>
+              <li className="text-base font-thin text-slate-400 text-end">
+                {user.calories
+                  ? `${((2000 / user.calories) * 100).toFixed(0)} %`
+                  : "none"}
+              </li>
             </ul>
           </div>
         </div>
@@ -43,9 +67,20 @@ const UserSidebar = () => {
           <h3 className="text-base font-bold text-slate-800">
             Food not recommended
           </h3>
-          <p className="text-base font-thin text-slate-400">
-            Your diet will be displayed here
-          </p>
+          <ul className="pl-4 flex flex-col gap-1">
+            <li className="text-base font-thin text-slate-400">
+              - Highly Processed Foods
+            </li>
+            <li className="text-base font-thin text-slate-400">
+              - Sugary Beverages
+            </li>
+            <li className="text-base font-thin text-slate-400">
+              - Fried and Fast Foods
+            </li>
+            <li className="text-base font-thin text-slate-400">
+              - Refined Carbohydrates
+            </li>
+          </ul>
         </div>
       </div>
     </section>

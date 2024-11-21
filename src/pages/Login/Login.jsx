@@ -1,12 +1,15 @@
 import logo from "../../images/logoSlimMom.png";
 
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../../REDUX/auth/operations";
 
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -26,7 +29,7 @@ const Login = () => {
         }}
         validationSchema={validationSchema}
         onSubmit={(values, { resetForm }) => {
-          console.log("Submitted Values:", values); // ! REMOVE
+          dispatch(login(values));
           resetForm();
         }}
       >
@@ -51,7 +54,7 @@ const Login = () => {
                     onClick={() => {
                       navigate("/login");
                     }}
-                    className="text-slate-300 text-sm font-bold hover:text-slate-500 focus:text-slate-500 transition-all duration-300"
+                    className=" text-sm font-bold text-slate-500"
                   >
                     LOGIN
                   </button>
@@ -89,7 +92,7 @@ const Login = () => {
                       <Field
                         id="password"
                         name="password"
-                        type="string"
+                        type="password"
                         placeholder="Password *"
                         className="w-60 bg-transparent border-b-2 outline-none pb-2 text-slate-400 font-bold focus:text-slate-600 focus:border-slate-600 placeholder:focus:text-slate-600 hover:text-slate-600 hover:border-slate-600"
                       />

@@ -1,1 +1,1 @@
-export const selectMealsList = (state) => state.meals.list;
+export const selectMealsList = (state) => state.meals.meals;

@@ -23,7 +23,7 @@ export const fetchIngredients = createAsyncThunk(
       setAuthHeader(token);
 
       const response = await axios.get("/ingredients");
-      return response.data;
+      return response.data.data;
     } catch (error) {
       return thunkApi.rejectWithValue(error.message);
     }

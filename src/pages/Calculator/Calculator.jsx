@@ -3,6 +3,10 @@ import logo from "../../images/logoSlimMom.png";
 import css from "./Calculator.module.css";
 
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { updateCurrentUser } from "../../REDUX/user/operations";
+import { logout } from "../../REDUX/auth/operations";
+import { selectUserCurrent, selectUserName } from "../../REDUX/user/selectors";
 
 import UserSidebar from "../../components/UserSidebar";
 import BurgerModal from "../../components/BurgerModal";
@@ -14,11 +18,15 @@ import * as Yup from "yup";
 
 const Calculator = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const user = useSelector(selectUserCurrent);
+  const name = useSelector(selectUserName);
+
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
 
   const [selectedValue, setSelectedValue] = useState("Blood type *");
-  const [submittedValues, setSubmittedValues] = useState(null);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -50,7 +58,21 @@ const Calculator = () => {
         }}
         validationSchema={validationSchema}
         onSubmit={(values, { resetForm }) => {
-          setSubmittedValues(values);
+          const { height, desWeight, age, blood } = values;
+
+          const BMR = 10 * desWeight + 6.25 * height - 5 * age + 5;
+          const calories = parseInt((BMR * 1.55).toFixed(0));
+
+          const submitValues = {
+            calories: calories,
+            height: height,
+            age: age,
+            bloodType: blood,
+          };
+          console.log(user._id, submitValues);
+          dispatch(
+            updateCurrentUser({ accountId: user._id, data: submitValues })
+          );
           setSelectedValue("Blood type *");
           resetForm();
         }}
@@ -68,9 +90,12 @@ const Calculator = () => {
                 />
                 <div className="flex gap-6">
                   <div className="hidden tablet:flex items-center gap-3">
-                    <p className="text-sm font-semibold text-slate-500">Name</p>
+                    <p className="text-sm font-semibold text-slate-500">
+                      {name}
+                    </p>
                     <div className="bg-slate-300 h-6 w-[2px]"></div>
                     <button
+                      onClick={() => dispatch(logout())}
                       type="button"
                       className="text-sm font-semibold text-slate-400"
                     >

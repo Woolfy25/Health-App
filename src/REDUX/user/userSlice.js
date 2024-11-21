@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchCurrentUser } from "./operations";
+import { updateCurrentUser } from "./operations";
 
 const handlePending = (state) => {
   state.isLoading = true;
@@ -13,6 +14,7 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     user: {
+      _id: null,
       email: null,
       name: null,
       height: null,
@@ -31,7 +33,14 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchCurrentUser.pending, handlePending)
-      .addCase(fetchCurrentUser.rejected, handleReject);
+      .addCase(fetchCurrentUser.rejected, handleReject)
+      .addCase(updateCurrentUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.isLoading = false;
+        state.error = null;
+      })
+      .addCase(updateCurrentUser.pending, handlePending)
+      .addCase(updateCurrentUser.rejected, handleReject);
   },
 });
 
