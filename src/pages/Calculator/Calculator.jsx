@@ -79,7 +79,7 @@ const Calculator = () => {
       >
         {({ isSubmitting, setFieldValue }) => (
           <section className="screen-max-width w-full h-[100vh] overflow-auto flex tablet:flex-col phone:flex-col">
-            <div className="w-3/5 flex flex-col pl-6 pt-12 gap-20 tablet:w-full tablet:pt-2 tablet:pl-0 tablet:gap-14 phone:w-full phone:pl-0 phone:pt-2 phone:gap-8">
+            <div className="w-3/5 flex flex-col pl-6 pr-6 tablet:pr-0 phone:pr-0 pt-12 gap-20 tablet:w-full tablet:pt-2 tablet:pl-0 tablet:gap-14 phone:w-full phone:pl-0 phone:pt-2 phone:gap-8">
               <nav className="flex items-baseline gap-4 tablet:justify-between tablet:pb-2 tablet:items-center tablet:border-b-2 tablet:border-slate-300 phone:justify-between phone:pb-2 phone:items-center phone:border-b-2 phone:border-slate-300">
                 <img
                   src={logo}
@@ -114,27 +114,29 @@ const Calculator = () => {
                     />
                   )}
                 </div>
-                <span className="bg-slate-300 h-8 w-[2px] tablet:hidden phone:hidden"></span>
-                <div className="flex flex-row gap-6 h-[17px] tablet:pr-6 phone:pr-4 tablet:hidden phone:hidden">
-                  <button
-                    onClick={() => {
-                      navigate("/diary");
-                    }}
-                    className="text-slate-300 text-sm font-bold hover:text-slate-500 focus:text-slate-500 transition-all duration-300"
-                  >
-                    DIARY
-                  </button>
-                  <button
-                    onClick={() => {
-                      navigate("/calculator");
-                    }}
-                    className="text-sm font-bold text-slate-500"
-                  >
-                    CALCULATOR
-                  </button>
+                <div className="flex items-center gap-7 tablet:hidden phone:hidden">
+                  <span className="bg-slate-300 h-8 w-[2px] tablet:hidden phone:hidden"></span>
+                  <div className="flex flex-row gap-6 h-[17px] tablet:pr-6 phone:pr-4 tablet:hidden phone:hidden pt-1">
+                    <button
+                      onClick={() => {
+                        navigate("/diary");
+                      }}
+                      className="text-slate-300 text-sm font-bold hover:text-slate-500 focus:text-slate-500 transition-all duration-300"
+                    >
+                      DIARY
+                    </button>
+                    <button
+                      onClick={() => {
+                        navigate("/calculator");
+                      }}
+                      className="text-sm font-bold text-slate-500"
+                    >
+                      CALCULATOR
+                    </button>
+                  </div>
                 </div>
               </nav>
-              <div className="flex flex-col gap-12 tablet:pl-6 phone:pl-5">
+              <div className="flex flex-col gap-12 tablet:pl-6 phone:pl-5 tablet:pr-6">
                 <h2 className="text-slate-800 text-3xl font-bold w-4/5 tablet:w-10/12 phone:w-10/12 phone:text-lg">
                   Calculate your daily calorie intake right now
                 </h2>

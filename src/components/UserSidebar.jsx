@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../REDUX/auth/operations";
 import { selectUserName, selectUserCurrent } from "../REDUX/user/selectors";
+import { selectCalories, selectDate } from "../REDUX/calories/selectors";
 
 import { fetchCurrentUser } from "../REDUX/user/operations";
 
@@ -10,6 +10,8 @@ const UserSidebar = () => {
   const dispatch = useDispatch();
   const name = useSelector(selectUserName);
   const user = useSelector(selectUserCurrent);
+  const caloriesTotal = useSelector(selectCalories);
+  const date = useSelector(selectDate);
 
   useEffect(() => {
     dispatch(fetchCurrentUser());
@@ -31,10 +33,10 @@ const UserSidebar = () => {
       <div className="flex flex-col gap-14 tablet:flex-row tablet:flex-wrap tablet:w-full">
         <div className="flex flex-col gap-6 tablet:w-72">
           <h3 className="text-base font-bold text-slate-800">
-            Summary for placeholder date
+            Summary for {date}
           </h3>
-          <div className="flex flex-row justify-between w-4/5 tablet:w-full phone:w-full">
-            <ul className="flex flex-col gap-2">
+          <div className="flex flex-row justify-between w-full max-w-72 tablet:w-full phone:w-full">
+            <ul className="flex flex-col gap-2 pl-6">
               <li className="text-base font-thin text-slate-400">Left</li>
               <li className="text-base font-thin text-slate-400">Consumed</li>
               <li className="text-base font-thin text-slate-400">Daily rate</li>
@@ -42,23 +44,22 @@ const UserSidebar = () => {
                 n% of normal
               </li>
             </ul>
-            <ul className="flex flex-col gap-2">
+            <ul className="flex flex-col gap-2 pr-3 tablet:pr-0 phone:pr-0">
               <li className="text-base font-thin text-slate-400 text-end">
-                {user.calories ? `${user.calories - 100} kcal` : "none"}
+                {user.calories
+                  ? `${user.calories - caloriesTotal} kcal`
+                  : "000 kcal"}
               </li>
               <li className="text-base font-thin text-slate-400 text-end">
-                {user.calories ? `${user.calories - 100} kcal` : "none"}
+                {user.calories ? `${caloriesTotal} kcal` : "000 kcal"}
               </li>
-              {
-                // ! modifica cu consumed
-              }
               <li className="text-base font-thin text-slate-400 text-end">
-                {user.calories ? `${user.calories} kcal` : "none"}
+                {user.calories ? `${user.calories} kcal` : "000 kcal"}
               </li>
               <li className="text-base font-thin text-slate-400 text-end">
                 {user.calories
-                  ? `${((2000 / user.calories) * 100).toFixed(0)} %`
-                  : "none"}
+                  ? `${((caloriesTotal / user.calories) * 100).toFixed(0)} %`
+                  : "0 %"}
               </li>
             </ul>
           </div>

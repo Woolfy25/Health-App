@@ -14,6 +14,7 @@ import {
 import { selectMealsList } from "../../REDUX/meals/selectors";
 import { selectUserName } from "../../REDUX/user/selectors";
 import { selectIngredientsList } from "../../REDUX/ingredients/selectors";
+import { setTotalCalories, setDate } from "../../REDUX/calories/calories.Slice";
 
 import UserSidebar from "../../components/UserSidebar";
 import BurgerModal from "../../components/BurgerModal";
@@ -25,7 +26,7 @@ import { FaCalendarAlt } from "react-icons/fa";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Formik, Form, Field, ErrorMessage, useFormikContext } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 const Diary = () => {
@@ -34,8 +35,8 @@ const Diary = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isMobileOpen, setMobileOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [isPhone, setIsPhone] = useState(window.innerWidth <= 425);
   const [query, setQuery] = useState("");
-  const [totalCal, setTotalCal] = useState(0);
   const [filteredIngredients, setFilteredIngredients] = useState([]);
   const mealsList = useSelector(selectMealsList);
   const name = useSelector(selectUserName);
@@ -81,11 +82,27 @@ const Diary = () => {
     (elem) => elem.date === formattedSelectedDate
   );
 
-  const totalCalories = filteredMeals.reduce((acc, meal) => {
-    return acc + meal.calories;
-  }, 0);
+  useEffect(() => {
+    const totalCalories = filteredMeals.reduce(
+      (acc, meal) => acc + meal.calories,
+      0
+    );
+    dispatch(setTotalCalories(totalCalories));
+  }, [filteredMeals, dispatch]);
 
-  console.log(totalCalories);
+  useEffect(() => {
+    dispatch(setDate(formattedSelectedDate));
+  }, [dispatch, formattedSelectedDate]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsPhone(window.innerWidth <= 425);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <>
@@ -109,7 +126,6 @@ const Diary = () => {
             calories: calories.toFixed(0),
             date: formattedDate,
           };
-          // console.log(submitValues);
 
           dispatch(addMeals(submitValues));
           setQuery("");
@@ -153,34 +169,40 @@ const Diary = () => {
                     />
                   )}
                 </div>
-                <span className="bg-slate-300 h-8 w-[2px] tablet:hidden phone:hidden"></span>
-                <div className="flex flex-row gap-6 h-[17px] tablet:pr-6 phone:pr-4 tablet:hidden phone:hidden">
-                  <button
-                    onClick={() => {
-                      navigate("/diary");
-                    }}
-                    className=" text-sm font-bold text-slate-500"
-                  >
-                    DIARY
-                  </button>
-                  <button
-                    onClick={() => {
-                      navigate("/calculator");
-                    }}
-                    className="text-slate-300 text-sm font-bold hover:text-slate-500 focus:text-slate-500 transition-all duration-300"
-                  >
-                    CALCULATOR
-                  </button>
+                <div className="flex items-center gap-7 tablet:hidden phone:hidden">
+                  <span className="bg-slate-300 h-8 w-[2px] tablet:hidden phone:hidden"></span>
+                  <div className="flex flex-row gap-6 h-[17px] tablet:pr-6 phone:pr-4 tablet:hidden phone:hidden pt-1">
+                    <button
+                      onClick={() => {
+                        navigate("/diary");
+                      }}
+                      className=" text-sm font-bold text-slate-500"
+                    >
+                      DIARY
+                    </button>
+                    <button
+                      onClick={() => {
+                        navigate("/calculator");
+                      }}
+                      className="text-slate-300 text-sm font-bold hover:text-slate-500 focus:text-slate-500 transition-all duration-300"
+                    >
+                      CALCULATOR
+                    </button>
+                  </div>
                 </div>
               </nav>
               <div className="flex flex-col gap-12 tablet:pl-6 pb-14 phone:gap-8 phone:pl-4">
-                <div className="w-[270px]">
+                <div className="w-[270px] phone:w-[180px]">
                   <DatePicker
-                    className="w-full text-slate-800 text-3xl font-bold placeholder:text-2xl placeholder:text-slate-800 text-center flex justify-center items-center"
+                    className="w-full text-slate-800 text-3xl phone:text-xl font-bold placeholder:text-2xl placeholder:text-slate-800 text-center flex justify-center items-center"
                     showIcon
                     icon={
                       <FaCalendarAlt
-                        style={{ width: "30px", height: "30px" }}
+                        style={{
+                          width: isPhone ? "20px" : "30px",
+                          height: isPhone ? "20px" : "30px",
+                          top: isPhone ? "2px" : "none",
+                        }}
                       />
                     }
                     selected={selectedDate}
@@ -190,7 +212,7 @@ const Diary = () => {
                   />
                 </div>
                 <Form className="flex flex-col phone:hidden">
-                  <div className="flex flex-wrap items-center gap-8 w-full phone:w-full">
+                  <div className="flex flex-wrap items-center justify-between w-full max-w-[435px] tablet:pr-2 phone:w-full">
                     <div className="relative">
                       <Field
                         value={query}
@@ -249,31 +271,31 @@ const Diary = () => {
                     </button>
                   </div>
                 </Form>
-                <div className="flex flex-col h-72 w-full max-w-[530px] overflow-auto pr-6 phone:pr-4">
+                <div className="flex flex-col h-72 w-full max-w-[570px] overflow-auto pr-4 tablet:pr-0 phone:pr-0">
                   <ul className="flex flex-col gap-4">
                     {filteredMeals.length > 0 ? (
                       filteredMeals.map((elem) => (
                         <li
                           key={elem._id}
-                          className="flex flex-row gap-6 items-end hover:border-slate-600 group phone:gap-2 h-[45px]"
+                          className="flex flex-row gap-4 tablet:gap-2 phone:gap-2 items-end hover:border-slate-600 group h-[45px]"
                         >
-                          <p className="overflow-auto whitespace-nowrap w-60 bg-transparent border-b-2 pb-2 text-slate-400 text-sm font-semibold group-hover:text-slate-600 group-hover:border-slate-600">
+                          <p className="overflow-auto whitespace-nowrap w-full max-w-66 bg-transparent border-b-2 pb-2 text-slate-400 text-sm font-semibold tablet:text-xs phone:text-[10px] group-hover:text-slate-600 group-hover:border-slate-600">
                             {elem.product}
                           </p>
-                          <p className="w-20 min-w-20 bg-transparent border-b-2 pb-2 text-slate-400 text-sm font-semibold group-hover:text-slate-600 group-hover:border-slate-600 text-center">
+                          <p className="w-14 min-w-14 tablet:w-12 tablet:min-w-12 phone:w-10 phone:min-w-10 bg-transparent border-b-2 pb-2 text-slate-400 text-sm font-semibold tablet:text-xs phone:text-[10px] group-hover:text-slate-600 group-hover:border-slate-600 text-center">
                             {elem.weight} <span>g</span>
                           </p>
-                          <p className="w-20 min-w-20 bg-transparent border-b-2 pb-2 text-slate-400 text-sm font-semibold group-hover:text-slate-600 group-hover:border-slate-600 text-end">
+                          <p className="w-20 min-w-20 tablet:w-[70px] tablet:min-w-[70px] phone:w-[55px] phone:min-w-[55px] bg-transparent border-b-2 pb-2 text-slate-400 text-sm font-semibold tablet:text-xs phone:text-[10px] group-hover:text-slate-600 group-hover:border-slate-600 text-end">
                             {elem.calories} <span>kcal</span>
                           </p>
                           <button
                             type="button"
-                            className="group-hover:scale-125 transition-all duration-200"
+                            className="group-hover:scale-125 transition-all duration-200 self-center"
                           >
                             {
                               <IoClose
                                 onClick={() => dispatch(deleteMeals(elem._id))}
-                                className="w-6 h-6 text-slate-400"
+                                className="w-6 h-6 text-slate-400 phone:w-4 phone:h-4"
                               />
                             }
                           </button>
@@ -301,10 +323,7 @@ const Diary = () => {
       </Formik>
       {isModalOpen && <BurgerModal />}
       {isMobileOpen && (
-        <MobileModal
-          date={formattedSelectedDate}
-          onClick={() => setMobileOpen(false)}
-        />
+        <MobileModal date={selectedDate} onClick={() => setMobileOpen(false)} />
       )}
     </>
   );

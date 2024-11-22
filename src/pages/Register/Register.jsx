@@ -51,24 +51,26 @@ const Register = () => {
                   height={66}
                   className="tablet:h-[50px] tablet:w-auto tablet:pl-6 phone:h-[44px] phone:w-auto phone:pl-4"
                 />
-                <span className="bg-slate-300 h-8 w-px tablet:hidden phone:hidden"></span>
-                <div className="flex flex-row gap-6 h-[17px] tablet:pr-6 phone:pr-4">
-                  <button
-                    onClick={() => {
-                      navigate("/login");
-                    }}
-                    className="text-slate-300 text-sm font-bold hover:text-slate-500 focus:text-slate-500 transition-all duration-300"
-                  >
-                    LOGIN
-                  </button>
-                  <button
-                    onClick={() => {
-                      navigate("/register");
-                    }}
-                    className="text-sm font-bold text-slate-500"
-                  >
-                    REGISTER
-                  </button>
+                <div className="flex items-center gap-4">
+                  <span className="bg-slate-300 h-8 w-px tablet:hidden phone:hidden"></span>
+                  <div className="flex flex-row gap-6 h-[17px] tablet:pr-6 phone:pr-4 pt-1">
+                    <button
+                      onClick={() => {
+                        navigate("/login");
+                      }}
+                      className="text-slate-300 text-sm font-bold hover:text-slate-500 focus:text-slate-500 transition-all duration-300"
+                    >
+                      LOGIN
+                    </button>
+                    <button
+                      onClick={() => {
+                        navigate("/register");
+                      }}
+                      className="text-sm font-bold text-slate-500"
+                    >
+                      REGISTER
+                    </button>
+                  </div>
                 </div>
               </nav>
               <div className="flex flex-col gap-10 tablet:pl-6 phone:pl-5">
