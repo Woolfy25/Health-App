@@ -15,10 +15,18 @@ body {
 }
 
 .bg-image {
-  background-image: url("./images/fruits-bg.png"), url("./images/vector-bg.png");
+  background-image: url("./images/good fruits desktop.png"),
+    url("./images/vector-bg.png");
   background-position: bottom right, bottom right;
-  background-size: contain, contain;
+  background-size: contain, 50%;
   background-repeat: no-repeat, no-repeat;
+}
+
+.bg-image-home {
+  background-image: url("./images/good frunze verticale sidebar desktop.png");
+  background-position: right;
+  background-size: 70%;
+  background-repeat: no-repeat;
 }
 
 .screen-max-width {
@@ -36,14 +44,24 @@ body {
 
 @media screen and (min-width: 426px) and (max-width: 768px) {
   .bg-image {
-    background-image: url("./images/fruits-bg-tablet.png"),
+    background-image: url("./images/good fruits tablet.png"),
       url("./images/vector-bg.png");
-    background-size: 400px 400px, 400px 450px;
+    background-size: 60%, 60%;
+  }
+
+  .bg-image-home {
+    background-image: url("./images/good frunze sidebar tableta.png");
+    background-position: bottom right;
+    background-size: 60%;
   }
 }
 
 @media screen and (max-width: 426px) {
   .bg-image {
+    background-image: none;
+  }
+
+  .bg-image-home {
     background-image: none;
   }
 }
