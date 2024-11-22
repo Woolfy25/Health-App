@@ -13,8 +13,8 @@ const LazyUserCalc = lazy(() => import("./pages/Calculator/Calculator"));
 
 function App() {
   return (
-    // <HashRouter>
-    <BrowserRouter>
+    <HashRouter>
+      {/* <BrowserRouter> */}
       <Suspense>
         <Routes>
           <Route
@@ -56,8 +56,8 @@ function App() {
           <Route path="*" element={<LazyNotFound />}></Route>
         </Routes>
       </Suspense>
-    </BrowserRouter>
-    //  </HashRouter>
+      {/* </BrowserRouter> */}
+    </HashRouter>
   );
 }
 
