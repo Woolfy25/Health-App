@@ -3,10 +3,7 @@ import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { selectToken } from "../auth/selectors";
 
-// const API_URL = "http://13.48.177.15:3000/health/";
-const API_URL_SSL = "https://13.48.177.15:3000/health/";
-
-axios.defaults.baseURL = API_URL_SSL || "http://localhost:3000/health/";
+// axios.defaults.baseURL = "https://health-app-server-pjbp.onrender.com/health/";
 
 const setAuthHeader = (token) => {
   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
@@ -25,7 +22,9 @@ export const fetchMeals = createAsyncThunk(
 
       setAuthHeader(token);
 
-      const response = await axios.get("/meals");
+      const response = await axios.get(
+        "https://health-app-server-pjbp.onrender.com/health/meals"
+      );
       return response.data;
     } catch (error) {
       return thunkApi.rejectWithValue(error.message);
@@ -46,7 +45,10 @@ export const addMeals = createAsyncThunk(
 
       setAuthHeader(token);
 
-      const response = await axios.post("/meals", meal);
+      const response = await axios.post(
+        "https://health-app-server-pjbp.onrender.com/health/meals",
+        meal
+      );
       return response.data;
     } catch (error) {
       return thunkApi.rejectWithValue(error.message);
@@ -67,7 +69,9 @@ export const deleteMeals = createAsyncThunk(
 
       setAuthHeader(token);
 
-      await axios.delete(`/meals/${transactionId}`);
+      await axios.delete(
+        `https://health-app-server-pjbp.onrender.com/health/meals/${transactionId}`
+      );
       return transactionId;
     } catch (error) {
       return thunkApi.rejectWithValue(error.message);

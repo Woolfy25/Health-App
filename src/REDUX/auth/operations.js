@@ -3,10 +3,7 @@ import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { selectToken } from "../auth/selectors";
 
-// const API_URL = "http://13.48.177.15:3000/health/";
-const API_URL_SSL = "https://13.48.177.15:3000/health/";
-
-axios.defaults.baseURL = API_URL_SSL || "http://localhost:3000/health/";
+// axios.defaults.baseURL = "https://health-app-server-pjbp.onrender.com/health/";
 
 const setAuthHeader = (token) => {
   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
@@ -16,7 +13,10 @@ export const register = createAsyncThunk(
   "auth/register",
   async (user, thunkApi) => {
     try {
-      const response = await axios.post("/account/register", user);
+      const response = await axios.post(
+        "https://health-app-server-pjbp.onrender.com/health/account/register",
+        user
+      );
       setAuthHeader(response.data.token);
       return response.data.data;
     } catch (error) {
@@ -27,7 +27,10 @@ export const register = createAsyncThunk(
 
 export const login = createAsyncThunk("auth/login", async (user, thunkApi) => {
   try {
-    const response = await axios.post("/account/login", user);
+    const response = await axios.post(
+      "https://health-app-server-pjbp.onrender.com/health/account/login",
+      user
+    );
     setAuthHeader(response.data.token);
     return response.data.data;
   } catch (error) {
@@ -45,7 +48,9 @@ export const logout = createAsyncThunk("auth/logout", async (_, thunkApi) => {
     }
 
     setAuthHeader(token);
-    await axios.delete("/account/logout");
+    await axios.delete(
+      "https://health-app-server-pjbp.onrender.com/health/account/logout"
+    );
   } catch (error) {
     return thunkApi.rejectWithValue(error.message);
   }
